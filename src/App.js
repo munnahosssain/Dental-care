@@ -7,6 +7,7 @@ import Login from "./Pages/Login/Login";
 import ContactUs from "./Pages/ContactUs/ContactUs";
 import Reviews from "./Pages/Reviews/Reviews";
 import Error from "./Pages/Error/Error";
+import SignUP from "./Pages/Login/SignUP";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="reviews" element={<Reviews />} />
         <Route path="contact" element={<ContactUs />} />
         <Route path="login" element={<Login />} />
+        <Route path="signup" element={<SignUP />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </div>
