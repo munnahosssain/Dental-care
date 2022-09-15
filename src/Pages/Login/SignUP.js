@@ -6,14 +6,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 
 const SignUP = () => {
-    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const [gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const [
-        createUserWithEmailAndPassword,
-        user,
-        loading,
-        error,
-    ] = useCreateUserWithEmailAndPassword(auth);
+    const [createUserWithEmailAndPassword, loading, error,] = useCreateUserWithEmailAndPassword(auth);
     const [updateProfile, updating, updateError] = useUpdateProfile(auth);
     const navigate = useNavigate()
 
@@ -28,12 +23,11 @@ const SignUP = () => {
         console.log(gUser);
     };
     const onSubmit = async data => {
-        console.log(data);
         await createUserWithEmailAndPassword(data.email, data.password);
         await updateProfile({ displayName: data.name });
-        alert('Updated profile');
         navigate('/appointment');
     };
+
     return (
         <div className="flex h-screen items-center justify-center">
             <div className="card w-96 bg-base-100 shadow-xl">
@@ -111,7 +105,7 @@ const SignUP = () => {
                         {signError}
                         <input className="btn w-full max-w-xs" type="submit" value="Login" />
                     </form>
-                    <p>Already Have an Account? <Link to="/login">SignUp</Link> </p>
+                    <p>Already Have an Account? <Link to="/login">LogIn</Link> </p>
                     <div className="divider">OR</div>
                     <button onClick={() => createUserWithEmailAndPassword()} className="btn btn-outline">Continue With Google</button>
                 </div>

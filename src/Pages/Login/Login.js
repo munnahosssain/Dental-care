@@ -1,32 +1,29 @@
 import React from 'react';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
-import { useForm } from "react-hook-form";
 import Loading from '../Shared/Loading';
-import { Link } from 'react-router-dom';
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from 'react-router-dom';
+import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 
 const Login = () => {
-    const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
+    const [signInWithGoogle, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const [
-        signInWithEmailAndPassword,
-        user,
-        loading,
-        error,
-    ] = useSignInWithEmailAndPassword(auth);
+    const [signInWithEmailAndPassword, loading, error,] = useSignInWithEmailAndPassword(auth);
     let signError;
+
+    const navigate = useNavigate();
+
     if (loading || gLoading) {
         return <Loading />
     }
+
     if (error || gError) {
         signError = <p className='text-red-500'>{error?.message || gError?.message}</p>
     }
-    if (gUser) {
-        console.log(gUser);
-    };
-    const onSubmit = data => {
-        console.log(data);
-        signInWithEmailAndPassword(data.email, data.password);
+
+    const onSubmit = async data => {
+        await signInWithEmailAndPassword(data.email, data.password);
+        await navigate('/appointment');
     };
 
     return (
@@ -35,7 +32,6 @@ const Login = () => {
                 <div className="card-body">
                     <h2 className="text-center font-bold text-2xl">Login</h2>
                     <form onSubmit={handleSubmit(onSubmit)}>
-
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
                                 <span className="label-text">Enter email</span>
@@ -84,12 +80,14 @@ const Login = () => {
                                 {errors.password?.type === 'minLength' && <span className="label-text-alt text-red-400">{errors.password.message}</span>}
                             </label>
                         </div>
-                        {signError}
+                        {
+                            signError
+                        }
                         <input className="btn w-full max-w-xs" type="submit" value="Login" />
                     </form>
                     <p>New to Doctors Portal? <Link to="/signup">Create new account</Link> </p>
                     <div className="divider">OR</div>
-                    <button onClick={() => signInWithGoogle()} className="btn btn-outline">Continue With Google</button>
+                    <button onClick={() => signInWithGoogle(navigate('/appointment'))} className="btn btn-outline">Continue With Google</button>
                 </div>
             </div>
         </div>
