@@ -4,28 +4,33 @@ import Loading from '../Shared/Loading';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
+import useToken from '../../Hooks/useToken';
 
 const SignUP = () => {
     const [gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const [createUserWithEmailAndPassword, loading, error,] = useCreateUserWithEmailAndPassword(auth);
+    const [createUserWithEmailAndPassword, user, loading, error,] = useCreateUserWithEmailAndPassword(auth);
     const [updateProfile, updating, updateError] = useUpdateProfile(auth);
-    const navigate = useNavigate()
+    const [token] = useToken(user || gUser);
+    const navigate = useNavigate();
 
-    let signError;
     if (loading || gLoading || updating) {
         return <Loading />
     }
+
+    let signError;
     if (error || gError || updateError) {
         signError = <p className='text-red-500'>{error?.message || gError?.message || updateError.message}</p>
     }
-    if (gUser) {
-        console.log(gUser);
+
+    if (token) {
+        navigate('/appointment');
     };
+
     const onSubmit = async data => {
         await createUserWithEmailAndPassword(data.email, data.password);
         await updateProfile({ displayName: data.name });
-        navigate('/appointment');
+        // navigate('/appointment');
     };
 
     return (
@@ -34,7 +39,6 @@ const SignUP = () => {
                 <div className="card-body">
                     <h2 className="text-center font-bold text-2xl">Sign Up</h2>
                     <form onSubmit={handleSubmit(onSubmit)}>
-
                         <div className="form-control w-full max-w-xs">
                             <label className="label">
                                 <span className="label-text">Your Name</span>

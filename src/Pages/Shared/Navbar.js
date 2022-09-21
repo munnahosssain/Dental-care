@@ -8,9 +8,11 @@ import auth from '../../firebase.init';
 const Navbar = () => {
     const navigate = useNavigate()
     const [user] = useAuthState(auth);
+
     const logout = () => {
         signOut(auth);
         navigate('/');
+        localStorage.removeItem('accessToken');
     };
 
     const menuItems = <>
@@ -44,7 +46,7 @@ const Navbar = () => {
                     {menuItems}
                 </ul>
             </div>
-            
+
         </div>
     );
 };

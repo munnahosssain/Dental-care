@@ -1,17 +1,28 @@
 import React from 'react';
+import { useEffect } from 'react';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import useToken from '../../Hooks/useToken';
 
 const Login = () => {
-    const [signInWithGoogle, gLoading, gError] = useSignInWithGoogle(auth);
+    const [signInWithGoogle, gLoading, gError, gUser] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
-    const [signInWithEmailAndPassword, loading, error,] = useSignInWithEmailAndPassword(auth);
-    let signError;
+    const [signInWithEmailAndPassword, loading, error, user] = useSignInWithEmailAndPassword(auth);
+    const [token] = useToken(user || gUser);
 
+    let signError;
     const navigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.pathname || '/';
+
+    useEffect(() => {
+        if (token) {
+            navigate(from, { replace: true });
+        }
+    }, [token, from, navigate])
 
     if (loading || gLoading) {
         return <Loading />
@@ -87,7 +98,7 @@ const Login = () => {
                     </form>
                     <p>New to Doctors Portal? <Link to="/signup">Create new account</Link> </p>
                     <div className="divider">OR</div>
-                    <button onClick={() => signInWithGoogle(navigate('/appointment'))} className="btn btn-outline">Continue With Google</button>
+                    <button onClick={() => signInWithGoogle()} className="btn btn-outline">Continue With Google</button>
                 </div>
             </div>
         </div>
