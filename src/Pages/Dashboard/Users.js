@@ -4,7 +4,7 @@ import Loading from '../Shared/Loading';
 import { useQuery } from 'react-query';
 
 const Users = () => {
-    const { data: users, isLoading } = useQuery('users',
+    const { data: users, isLoading, refetch } = useQuery('users',
         () => fetch('http://localhost:5000/users', {
             method: 'GET',
             headers: {
@@ -36,6 +36,7 @@ const Users = () => {
                                     index={index}
                                     key={user._id}
                                     user={user}
+                                    refetch={refetch}
                                 />
                             )
                         }
