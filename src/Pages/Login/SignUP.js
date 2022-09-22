@@ -2,9 +2,9 @@ import React from 'react';
 import auth from '../../firebase.init';
 import Loading from '../Shared/Loading';
 import { useForm } from "react-hook-form";
+import useToken from '../../Hooks/useToken';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
-import useToken from '../../Hooks/useToken';
 
 const SignUP = () => {
     const [gUser, gLoading, gError] = useSignInWithGoogle(auth);
@@ -30,7 +30,7 @@ const SignUP = () => {
     const onSubmit = async data => {
         await createUserWithEmailAndPassword(data.email, data.password);
         await updateProfile({ displayName: data.name });
-        // navigate('/appointment');
+        navigate('/appointment');
     };
 
     return (

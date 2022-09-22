@@ -18,9 +18,9 @@ const MyAppointment = () => {
             })
                 .then(res => {
                     if (res.status === 401 || res.status === 403) {
-                        localStorage.removeItem('accessToken');
-                        signOut(auth);
-                        navigate('/');
+                        // localStorage.removeItem('accessToken');
+                        // signOut(auth);
+                        // navigate('/');
                     }
                     return res.json();
                 })
