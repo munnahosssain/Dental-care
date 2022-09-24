@@ -20,6 +20,7 @@ const Login = () => {
 
     useEffect(() => {
         if (token) {
+            navigate('/appointment');
             navigate(from, { replace: true });
         }
     }, [token, from, navigate])

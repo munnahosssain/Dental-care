@@ -24,8 +24,8 @@ const Users = () => {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Name</th>
-                            <th>Job</th>
+                            <th>Email</th>
+                            <th>Admin Type</th>
                             <th>Favorite Color</th>
                         </tr>
                     </thead>

@@ -28,7 +28,7 @@ const MyAppointment = () => {
                     setAppointments(data);
                 });
         }
-    }, [user])
+    }, [])
 
     return (
         <div className="overflow-x-auto">

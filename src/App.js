@@ -10,12 +10,13 @@ import Error from "./Pages/Error/Error";
 import SignUp from "./Pages/Login/SignUp";
 import RequireAuth from "./Pages/Login/RequireAuth";
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import MyReview from "./Pages/Dashboard/MyReview";
 import MyAppointment from "./Pages/Dashboard/MyAppointment";
 import History from "./Pages/Dashboard/History";
 import Users from "./Pages/Dashboard/Users";
+import RequireAdmin from "./Pages/Login/RequireAdmin";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -43,7 +44,7 @@ function App() {
           <Route index element={<MyAppointment />} />
           <Route path="review" element={<MyReview />} />
           <Route path="history" element={<History />} />
-          <Route path="users" element={<Users />} />
+          <Route path="users" element={<RequireAdmin><Users /></RequireAdmin>} />
         </Route>
         <Route path="reviews" element={<Reviews />} />
         <Route path="contact" element={<ContactUs />} />
